@@ -2,6 +2,7 @@ package com.airline.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -9,8 +10,9 @@ import javax.persistence.*;
  * Entity implementation class for Entity: Passenger
  *
  */
-@Entity
 
+
+@Entity
 public class Passenger implements Serializable {
 
 	@Transient
@@ -36,6 +38,9 @@ public class Passenger implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private FlightClass flightClass;
+	
+	@ManyToMany(mappedBy = "passengers")
+	private List<Flight> flights;
 
 	public int getId() {
 		return id;
@@ -83,6 +88,14 @@ public class Passenger implements Serializable {
 
 	public void setFlightClass(FlightClass flightClass) {
 		this.flightClass = flightClass;
+	}
+	
+	public List<Flight> getFlights() {
+		return flights;
+	}
+
+	public void setFlights(List<Flight> flights) {
+		this.flights = flights;
 	}
 
 	@Override

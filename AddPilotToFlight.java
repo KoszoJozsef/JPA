@@ -33,11 +33,6 @@ public class AddPilotToFlight extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String pid = request.getParameter("pid");
-		String fid = request.getParameter("fid");
-		
-		fs.AddPilotToFlight(pid, fid);
 		
 	}
 
@@ -45,7 +40,11 @@ public class AddPilotToFlight extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
+		String pid = request.getParameter("pid");
+		String fid = request.getParameter("fid");
+		
+		fs.addPilotToFlight(pid, fid);
 	}
 
 }

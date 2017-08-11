@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.airline.models.FlightClass;
 import com.airline.models.Gender;
 import com.airline.models.Passenger;
 import com.airline.service.PassengerService;
@@ -39,27 +38,6 @@ public class AddPassenger extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Passenger p = new Passenger();
-		
-		p.setFirstName("Elek");
-		p.setLastName("Szer");
-		
-		Calendar cal = Calendar.getInstance();
-		
-		cal.set(Calendar.YEAR, 1990);
-		cal.set(Calendar.MONTH, 5);
-		cal.set(Calendar.DAY_OF_MONTH, 24);
-		
-		Date dob = cal.getTime();
-		
-		p.setDob(dob);
-		
-		p.setGender(Gender.Male);
-		p.setFlightClass(FlightClass.First);
-		
-		System.out.println(p);
-		
-		ps.addPassenger(p);
 	}
 
 	/**
@@ -67,6 +45,36 @@ public class AddPassenger extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		String firstName = request.getParameter("first_name");
+		String lastName = request.getParameter("last_name");
+		String dob_tmp = request.getParameter("dob");
+		String gender = request.getParameter("gender");
+		
+		Passenger p = new Passenger();
+		
+		p.setFirstName(firstName);
+		p.setLastName(lastName);
+		
+		String[] dob_tmp2 = dob_tmp.split("\\/");
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.set(Calendar.YEAR, Integer.parseInt(dob_tmp2[2]));
+		cal.set(Calendar.MONTH, Integer.parseInt(dob_tmp2[0])-1);
+		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dob_tmp2[1]));
+		
+		Date dob = cal.getTime();
+		
+		p.setDob(dob);
+		
+		p.setGender(Gender.valueOf(gender));
+		
+		System.out.println(p);
+		
+		ps.addPassenger(p);
+		
+		response.sendRedirect("Passengers");
+		
 	}
 
 }

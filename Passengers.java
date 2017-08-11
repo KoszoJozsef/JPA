@@ -12,22 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.airline.models.Flight;
+import com.airline.models.Passenger;
 import com.airline.service.FlightService;
+import com.airline.service.PassengerService;
 
 /**
- * Servlet implementation class Flights
+ * Servlet implementation class Passengers
  */
-@WebServlet("/Flights")
-public class Flights extends HttpServlet {
+@WebServlet("/Passengers")
+public class Passengers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	@EJB
-	FlightService fs;
+	PassengerService ps;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Flights() {
+    public Passengers() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,11 +39,11 @@ public class Flights extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		List<Flight> fList = (List<Flight>) fs.getFlights();
+		List<Passenger> pList = (List<Passenger>) ps.getPassengers();
 		
-		request.setAttribute("flight_list", fList);
+		request.setAttribute("passengers_list", pList);
 		
-		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/flight_list.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/passengers_list.jsp");
 	
 		view.forward(request, response);
 	}
