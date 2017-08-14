@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -31,9 +32,11 @@ public class PassengerService {
     @PersistenceContext(unitName="user")
     private EntityManager em;
     
-    public void addPassenger(Passenger p){
+    public Passenger addPassenger(Passenger p){
     	
     	em.persist(p);
+    	
+    	return p;
     	
     }
     
@@ -82,5 +85,73 @@ public class PassengerService {
     	List<Passenger> pList = query.getResultList();
     	
     	return pList;
+    }
+    
+    public Passenger getPassenger(int passengerId){
+    	
+    	CriteriaBuilder builder = em.getCriteriaBuilder();
+    	
+    	CriteriaQuery<Passenger> cqPassenger = builder.createQuery(Passenger.class);
+    	
+    	Root<Passenger> pRoot = cqPassenger.from(Passenger.class);
+    	
+    	cqPassenger.select(pRoot).where(builder.equal(pRoot.get("id").as(Integer.class), passengerId));
+    
+    	TypedQuery<Passenger> pQuery = em.createQuery(cqPassenger);
+    	
+    	Passenger p = null;
+    	
+    	try{
+    	
+    		p = pQuery.getSingleResult();
+    		
+    	} catch(NoResultException e){
+    		return null;
+    	}
+    	
+    	return p;
+    }
+    
+    public Passenger updatePassenger(int passengerId, Passenger pUpdated){
+    	
+    	Passenger p = em.find(Passenger.class, passengerId);
+    	
+    	if(p == null){
+    		return null;
+    	}
+    	
+    	if(pUpdated.getFirstName() != null){
+    		p.setFirstName(pUpdated.getFirstName());
+    	}
+    	
+    	if(pUpdated.getLastName() != null){
+    		p.setLastName(pUpdated.getLastName());
+    	}
+    	
+    	if(pUpdated.getDob() != null){
+    		p.setDob(pUpdated.getDob());
+    	}
+    	
+    	if(pUpdated.getGender() != null){
+    		p.setGender(pUpdated.getGender());
+    	}
+    	
+    	return p;
+    }
+    
+    public Passenger updatePassenger2(int passengerId, Passenger pUpdated){
+    	
+    	pUpdated.setId(passengerId);
+    	
+    	Passenger pCheckExist = em.find(Passenger.class, passengerId);
+    	
+    	if(pCheckExist == null){
+    		return null;
+    	}
+    	
+    	em.merge(pUpdated);
+    	
+    	
+    	return pUpdated;
     }
 }

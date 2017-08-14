@@ -41,7 +41,7 @@ public class Flight implements Serializable {
 	@JoinColumn(name="airplane_fk")
 	private Airplane airplaneDetail;
 	
-	@OneToMany(mappedBy = "flightforPilot")
+	@OneToMany(mappedBy = "flightforPilot", cascade = {CascadeType.REMOVE})
 	private List<Pilot> pilots;
 	
 	@ManyToMany

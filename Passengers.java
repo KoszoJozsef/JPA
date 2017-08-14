@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.airline.models.Flight;
 import com.airline.models.Passenger;
-import com.airline.service.FlightService;
 import com.airline.service.PassengerService;
 
 /**
